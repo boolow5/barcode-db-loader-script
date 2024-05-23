@@ -1,3 +1,5 @@
+import time
+
 # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     """
@@ -19,3 +21,12 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     # Print New Line on Complete
     if iteration == total: 
         print()
+
+if __name__=="__main__":
+    print("common")
+    for i in range(100):
+        # print(f"i={i}")
+        num = ':02d'.format(i+1)
+        printProgressBar(i, 100, prefix=f'{i+1}/{100}', suffix='Completed', decimals=4, length=100)
+        # printProgressBar(i, 100, prefix = 'Progress:', suffix = 'Complete', decimals=4, length = 100)
+        time.sleep(1)

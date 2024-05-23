@@ -1,5 +1,5 @@
 .env*
-barcode-database.csv
+barcode-*.csv
 myenv/
 __pycache__/
 *.pyc

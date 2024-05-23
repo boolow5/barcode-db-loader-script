@@ -19,10 +19,12 @@ barcodes = db[col_name]
 print('Collection: {}'.format(barcodes))
 length = 0
 
-with open('barcode-database.csv', 'r') as f:
+barcode_file_name = 'barcode-database-reverse.csv'
+
+with open(barcode_file_name, 'r') as f:
     length = sum(1 for row in f)
 
-with open('barcode-database.csv', 'r') as file:
+with open(barcode_file_name, 'r') as file:
     CsvReader = csv.reader(file)
 
     count = 0
@@ -32,37 +34,30 @@ with open('barcode-database.csv', 'r') as file:
         if count == 1:
             continue
         
-        if len(line) < 12:
+        if len(line) < 7:
             print(' ------- XX {} XX ------- '.format(len(line)))
             continue
 
         record = {
-            '_id': line[0],
-            'code': line[1],
-            'title': line[2],
-            'description': line[3] or line[4],
-            # 'ingredients_text': line[4],
-            # 'allergens_imported': line[5],
-            # 'categories_old': line[6],
-            # 'categories_tags': line[7],
-            # 'lang': line[8],
-            'brand': line[9],
-            'manufacturer': line[10],
-            'category': line[6] or line[7],
-            # 'link': line[11],
+            'code': line[0],
+            'title': line[1] or line[2],
+            'lang': line[4],
+            'brand': line[5],
+            'manufacturer': line[6],
+            'category': line[3],
         }
-
 
         try:
             # barcodes.insert_one(record)
             result = barcodes.update_one(
-                {'id': record['_id']},
+                {'id': record['code']},
                 {'$set': record},
-                upsert=True,
+                # upsert=True,
             )
             # print(f'{count}. {result.matched_count}\t{result.modified_count}\t{line[1]}\t{line[2]}')
             # print(f'.', end="")
-            common.printProgressBar(count, prefix = 'Progress:', suffix = 'Complete', decimals=4, length = 100, total=length)
+            # common.printProgressBar(count, prefix = 'Progress:', suffix = 'Complete', decimals=4, length = 100, total=length)
+            common.printProgressBar(count, prefix = f'{count:,}/{length:,}', suffix = 'Complete', decimals=3, length = 100, total=length)
         except Exception as e:
             print(f'Error: {e}')
         
